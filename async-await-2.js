@@ -23,7 +23,6 @@ let salarios = [{
     }
 ];
 
-// esta vez se realizara algo similar a la clase callback-problemas.js pero mediante el uso de promesas
 
 let getEmployee = (id) => {
     return new Promise((resolve, reject) => {
@@ -45,27 +44,17 @@ let getSalario = (empleado) => {
     });
 }
 
-getEmployee(10).then((empleado) => {
-    console.log('Empleado de la BD enontrado : ', empleado);
-}, (err) => {
-    console.log(err);
-})
+// usamos el await en conjunto con el async para consultar los metodos que retornan promesas
+let getInformation = async(id) => {
+    let empleado = await getEmployee(id);
+    let salario = await getSalario(empleado);
+    return `El empleado ${empleado.nombre} tiene como salario ${salario.salario}`;
+}
 
-let empleado1 = empleados[0];
-getSalario(empleado1).then((salarioDB) => {
-    console.log(`El salario del empleado ${empleado1.nombre} es ${salarioDB.salario}`);
-}, (err) => {
-    console.log(err);
-});
-
-// forma 1 de usar promises de manera encadenada
-getEmployee(2)
-    .then((empleado) => { // promise 1 : para obtener el empleado
-        return getSalario(empleado);
+getInformation(3)
+    .then((mensaje) => {
+        console.log(mensaje);
     })
-    .then((resp) => { // promise 2 : para obtener el salario
-        console.log(`El salario del empleado ${resp.id} es de ${resp.salario}`);
-    })
-    .catch((err) => { // manejo de errores de todas las promesas
+    .catch((err) => {
         console.log(err);
-    })
+    });
