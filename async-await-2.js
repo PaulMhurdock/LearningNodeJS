@@ -24,24 +24,20 @@ let salarios = [{
 ];
 
 
-let getEmployee = (id) => {
-    return new Promise((resolve, reject) => {
-        let empleadoDB = empleados.find((empleado) => empleado.id === id);
-        if (!empleadoDB)
-            reject(`El empleado con el ID ${id} no fue encontrado`);
-        else
-            resolve(empleadoDB);
-    });
+let getEmployee = async(id) => {
+    let empleadoDB = empleados.find((empleado) => empleado.id === id);
+    if (!empleadoDB)
+        throw new Error(`El empleado con el ID ${id} no fue encontrado`);
+    else
+        return empleadoDB;
 }
 
 let getSalario = (empleado) => {
-    return new Promise((resolve, reject) => {
-        let salarioDB = salarios.find((salario) => salario.id === empleado.id);
-        if (!salarioDB)
-            reject(`El salario para el empleado ${empleado.nombre} no fue encontrado`);
-        else
-            resolve(salarioDB);
-    });
+    let salarioDB = salarios.find((salario) => salario.id === empleado.id);
+    if (!salarioDB)
+        throw new Error(`El salario para el empleado ${empleado.nombre} no fue encontrado`);
+    else
+        return salarioDB;
 }
 
 // usamos el await en conjunto con el async para consultar los metodos que retornan promesas
@@ -51,7 +47,7 @@ let getInformation = async(id) => {
     return `El empleado ${empleado.nombre} tiene como salario ${salario.salario}`;
 }
 
-getInformation(3)
+getInformation(2)
     .then((mensaje) => {
         console.log(mensaje);
     })
